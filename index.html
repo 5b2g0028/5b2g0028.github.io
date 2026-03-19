@@ -1,120 +1,186 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <title>我的個人網站</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f6f8;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        header {
-            background-color: #4a90e2;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    color: white;
+}
 
-        nav {
-            background-color: #333;
-            padding: 10px;
-            text-align: center;
-        }
+/* 導覽列 */
+nav {
+    position: fixed;
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+}
 
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+nav a {
+    color: #cbd5f5;
+    margin: 0 15px;
+    text-decoration: none;
+}
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+nav a:hover {
+    color: #a78bfa;
+}
 
-        section {
-            padding: 40px;
-            max-width: 900px;
-            margin: auto;
-        }
+/* 首頁 */
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-        .card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+.hero h1 {
+    font-size: 3em;
+}
 
-        footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #333;
-            color: white;
-        }
-    </style>
+.hero p {
+    margin-top: 10px;
+    color: #cbd5f5;
+}
+
+/* 區塊 */
+section {
+    padding: 80px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* 卡片 */
+.card {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 20px;
+    margin: 15px 0;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* 標題 */
+h2 {
+    margin-bottom: 20px;
+    border-left: 5px solid #a78bfa;
+    padding-left: 10px;
+}
+
+/* 動畫 */
+.fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1s;
+}
+
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+}
+</style>
+
 </head>
 
 <body>
 
-<header>
-    <h1>你的名字</h1>
-    <p>個人網站 / 作業展示</p>
-</header>
-
 <nav>
-    <a href="#about">自我介紹</a>
-    <a href="#homework">作業</a>
-    <a href="#projects">作品</a>
-    <a href="#contact">聯絡我</a>
+    <a href="#about">About</a>
+    <a href="#hw">Homework</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
 </nav>
 
-<section id="about">
+<div class="hero">
+    <h1>你的名字</h1>
+    <p>Student Portfolio Website</p>
+</div>
+
+<section id="about" class="fade">
+    <h2>👤 About Me</h2>
     <div class="card">
-        <h2>👤 自我介紹</h2>
         <p>姓名：你的名字</p>
         <p>科系：你的科系</p>
-        <p>興趣：寫程式 / 打遊戲 / 看電影（自己改）</p>
+        <p>興趣：寫程式 / 設計 / 遊戲</p>
     </div>
 </section>
 
-<section id="homework">
-    <div class="card">
-        <h2>📂 作業區</h2>
-        <ul>
-            <li><a href="#">HW1 - 作業名稱</a></li>
-            <li><a href="#">HW2 - 作業名稱</a></li>
-            <li><a href="#">HW3 - 作業名稱</a></li>
-        </ul>
+<section id="hw" class="fade">
+    <h2>📚 Homework</h2>
+    <div class="grid">
+        <div class="card">HW1 - 作業內容</div>
+        <div class="card">HW2 - 作業內容</div>
+        <div class="card">HW3 - 作業內容</div>
     </div>
 </section>
 
-<section id="projects">
-    <div class="card">
-        <h2>💻 作品展示</h2>
-        <p>這裡可以放你的專題或練習作品</p>
-        <ul>
-            <li>作品1：簡單網站設計</li>
-            <li>作品2：小遊戲</li>
-        </ul>
+<section id="projects" class="fade">
+    <h2>💻 Projects</h2>
+    <div class="grid">
+        <div class="card">專題 1</div>
+        <div class="card">專題 2</div>
     </div>
 </section>
 
-<section id="contact">
+<section id="contact" class="fade">
+    <h2>📫 Contact</h2>
     <div class="card">
-        <h2>📫 聯絡方式</h2>
         <p>Email：your@email.com</p>
-        <p>IG：your_instagram（可選）</p>
+        <p>Instagram：your_ig</p>
     </div>
 </section>
 
 <footer>
     <p>© 2026 你的名字</p>
 </footer>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+
+window.addEventListener('scroll', () => {
+    const trigger = window.innerHeight * 0.85;
+
+    faders.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+
+        if(top < trigger){
+            el.classList.add('show');
+        }
+    });
+});
+</script>
 
 </body>
 </html>
