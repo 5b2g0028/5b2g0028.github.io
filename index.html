@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Portfolio</title>
-
+<title>余峻豪 Portfolio</title>
 <style>
+/* 全站 Reset & 字體 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1e1b4b, #0f172a);
+    font-family: "Segoe UI", sans-serif;
+    background: #0f172a;
     color: white;
 }
 
@@ -22,156 +21,140 @@ body {
 nav {
     position: fixed;
     width: 100%;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.35);
     backdrop-filter: blur(10px);
-    padding: 15px;
+    padding: 15px 0;
     text-align: center;
-    z-index: 1000;
+    z-index: 100;
 }
-
 nav a {
     color: #cbd5f5;
-    margin: 0 15px;
+    margin: 0 18px;
+    font-weight: bold;
     text-decoration: none;
+    transition: 0.3s;
 }
-
 nav a:hover {
     color: #a78bfa;
 }
 
-/* 首頁 */
-.hero {
-    height: 100vh;
+/* Banner 大頭區 */
+.banner {
+    height: 350px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    text-align: center;
+    padding: 20px;
 }
-
-.hero h1 {
+.banner h1 {
     font-size: 3em;
 }
-
-.hero p {
-    margin-top: 10px;
-    color: #cbd5f5;
+.banner p {
+    margin-top: 8px;
+    color: #94a3b8;
 }
 
-/* 區塊 */
+/* 區塊共同樣式 */
 section {
     padding: 80px 20px;
-    max-width: 1000px;
+    max-width: 900px;
     margin: auto;
 }
-
-/* 卡片 */
-.card {
-    background: rgba(255,255,255,0.1);
-    padding: 25px;
-    border-radius: 20px;
-    margin: 15px 0;
-    backdrop-filter: blur(10px);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.03);
-}
-
-/* Grid */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-/* 標題 */
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border-left: 5px solid #a78bfa;
     padding-left: 10px;
 }
 
-/* 動畫 */
-.fade {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 1s;
-}
-
-.fade.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* footer */
-footer {
-    text-align: center;
+/* 卡片樣式 */
+.card {
+    background: rgba(255,255,255,0.05);
     padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+/* 作業 Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 20px;
+}
+
+/* 聯絡連結 */
+.contact-link {
     color: #94a3b8;
+    text-decoration: none;
+}
+.contact-link:hover {
+    color: #a78bfa;
 }
 </style>
-
 </head>
-
 <body>
 
 <nav>
     <a href="#about">About</a>
-    <a href="#hw">Homework</a>
+    <a href="#homework">Homework</a>
     <a href="#contact">Contact</a>
 </nav>
 
-<div class="hero">
-    <h1>余峻豪</h1>
-    <p>Student Portfolio Website</p>
+<div class="banner" id="top">
+    <div>
+        <h1>余峻豪</h1>
+        <p>Student | Aspiring Web Developer</p>
+    </div>
 </div>
 
-<section id="about" class="fade">
+<section id="about">
     <h2>👤 About Me</h2>
     <div class="card">
-        <p>姓名：余峻豪</p>
-        <p>科系：資工系</p>
-        <p>興趣：打遊戲</p>
+        <p><strong>姓名：</strong>余峻豪</p>
+        <p><strong>科系：</strong>資工系</p>
+        <p><strong>興趣：</strong>打遊戲 / 學網頁設計</p>
+    </div>
+    <div class="card">
+        <h3>✨ Skills 技能</h3>
+        <p>HTML / CSS / JavaScript</p>
     </div>
 </section>
 
-<section id="hw" class="fade">
+<section id="homework">
     <h2>📚 Homework</h2>
     <div class="grid">
-        <div class="card">HW1 - 作業內容</div>
-        <div class="card">HW2 - 作業內容</div>
-        <div class="card">HW3 - 作業內容</div>
+        <div class="card">
+            <h3>HW1</h3>
+            <p>個人網站設計</p>
+        </div>
+        <div class="card">
+            <h3>HW2</h3>
+            <p>HTML 練習</p>
+        </div>
+        <div class="card">
+            <h3>HW3</h3>
+            <p>CSS 版面練習</p>
+        </div>
     </div>
 </section>
 
-
-<section id="contact" class="fade">
+<section id="contact">
     <h2>📫 Contact</h2>
     <div class="card">
-        <p>Email：5b2g0028@stust.edu.tw</p>
+        <p>Email: <a class="contact-link" href="mailto:5b2g0028@stust.edu.tw">5b2g0028@stust.edu.tw</a></p>
+        <p>GitHub: <a class="contact-link" href="https://github.com/5b2g0028">github.com/5b2g0028</a></p>
     </div>
 </section>
 
-<footer>
-    <p>© 2026 余峻豪</p>
+<footer style="text-align:center; padding:20px; color:#7e8ba6;">
+    © 2026 余峻豪
 </footer>
-
-<script>
-const faders = document.querySelectorAll('.fade');
-
-window.addEventListener('scroll', () => {
-    const trigger = window.innerHeight * 0.85;
-
-    faders.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-
-        if(top < trigger){
-            el.classList.add('show');
-        }
-    });
-});
-</script>
 
 </body>
 </html>
