@@ -1,161 +1,881 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>余峻豪 Portfolio</title>
-<style>
-/* 全站 Reset & 字體 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body {
-    font-family: "Segoe UI", sans-serif;
-    background: #0f172a;
-    color: white;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>余峻豪 | 資訊工程系</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --card: #1e1e1e;
+      --accent: #4fffb0;
+      --accent2: #00cfff;
+      --text: #f0f0f0;
+      --muted: #888;
+      --border: #2a2a2a;
+    }
 
-/* 導覽列 */
-nav {
-    position: fixed;
-    width: 100%;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(10px);
-    padding: 15px 0;
-    text-align: center;
-    z-index: 100;
-}
-nav a {
-    color: #cbd5f5;
-    margin: 0 18px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-}
-nav a:hover {
-    color: #a78bfa;
-}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Banner 大頭區 */
-.banner {
-    height: 350px;
-    background: linear-gradient(135deg, #1e293b, #0f172a);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-}
-.banner h1 {
-    font-size: 3em;
-}
-.banner p {
-    margin-top: 8px;
-    color: #94a3b8;
-}
+    html { scroll-behavior: smooth; }
 
-/* 區塊共同樣式 */
-section {
-    padding: 80px 20px;
-    max-width: 900px;
-    margin: auto;
-}
-h2 {
-    margin-bottom: 25px;
-    border-left: 5px solid #a78bfa;
-    padding-left: 10px;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
 
-/* 卡片樣式 */
-.card {
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 18px;
-    transition: 0.3s;
-}
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-}
+    /* ── CURSOR ── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .08s, width .2s, height .2s, background .2s;
+    }
+    .cursor-ring {
+      width: 34px; height: 34px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed; pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform .18s ease, width .2s, height .2s, opacity .2s;
+      opacity: .6;
+    }
 
-/* 作業 Grid */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-    gap: 20px;
-}
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(13,13,13,.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: .05em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: .78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: color .25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width .3s ease;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
 
-/* 聯絡連結 */
-.contact-link {
-    color: #94a3b8;
-    text-decoration: none;
-}
-.contact-link:hover {
-    color: #a78bfa;
-}
-</style>
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 60px;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(79,255,176,.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(0,207,255,.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-left { position: relative; z-index: 2; }
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-tag::before {
+      content: ''; display: block;
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+    }
+    .hero-name .accent { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 22px;
+      line-height: 1.7;
+      max-width: 420px;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+    .hero-btns {
+      display: flex; gap: 14px;
+      margin-top: 40px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 13px 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 13px 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* hero right — profile card */
+    .hero-right {
+      display: flex; justify-content: center; align-items: center;
+      position: relative; z-index: 2;
+    }
+    .profile-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 48px 40px;
+      width: 300px;
+      position: relative;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute; top: -1px; left: 20px;
+      width: 60px; height: 3px;
+      background: var(--accent);
+    }
+    @keyframes floatCard {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .profile-avatar {
+      width: 110px; height: 110px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #000;
+    }
+    .profile-card h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .profile-dept {
+      font-family: 'Space Mono', monospace;
+      font-size: .68rem;
+      color: var(--accent);
+      letter-spacing: .18em;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .profile-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat {
+      background: var(--surface);
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: .65rem;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: .08em;
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 100px 60px; }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: '//'; }
+    .section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 50px;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 18px;
+      font-size: .97rem;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .info-list { list-style: none; margin-top: 32px; }
+    .info-list li {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .9rem;
+    }
+    .info-list li:last-child { border-bottom: none; }
+    .info-key {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent);
+      min-width: 80px;
+      letter-spacing: .08em;
+    }
+    .about-skills-col {}
+    .skill-category { margin-bottom: 36px; }
+    .skill-category h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent2);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: .78rem;
+      color: var(--text);
+      letter-spacing: .05em;
+      transition: border-color .2s, color .2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* skill bars */
+    .skill-bars { display: flex; flex-direction: column; gap: 16px; }
+    .skill-bar-item {}
+    .skill-bar-header {
+      display: flex; justify-content: space-between;
+      font-size: .82rem;
+      margin-bottom: 6px;
+    }
+    .skill-bar-header span:last-child {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent);
+    }
+    .bar-track {
+      height: 4px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width: 0;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── RESUME ── */
+    #resume { background: var(--bg); }
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    .timeline-col h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      color: var(--accent2);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -28px; top: 6px;
+      width: 8px; height: 8px;
+      border: 1.5px solid var(--accent);
+      background: var(--bg);
+      transform: rotate(45deg);
+    }
+    .tl-year {
+      font-family: 'Space Mono', monospace;
+      font-size: .68rem;
+      color: var(--accent);
+      letter-spacing: .12em;
+      margin-bottom: 6px;
+    }
+    .tl-title {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .tl-place {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .tl-desc {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--surface); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s;
+      cursor: default;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .4s ease;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .project-card:hover::after { width: 100%; }
+    .project-num {
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      margin-bottom: 18px;
+    }
+    .project-card h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .project-card p {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: .62rem;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+    .contact-inner {
+      max-width: 700px;
+    }
+    .contact-inner > p {
+      color: var(--muted);
+      font-size: .97rem;
+      line-height: 1.85;
+      margin-bottom: 40px;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .contact-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: padding-left .25s;
+    }
+    .contact-link:first-child { border-top: 1px solid var(--border); }
+    .contact-link:hover { padding-left: 14px; }
+    .contact-link:hover .cl-label { color: var(--accent); }
+    .cl-label {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      transition: color .25s;
+    }
+    .cl-arrow {
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      color: var(--muted);
+      transition: color .25s, transform .25s;
+    }
+    .contact-link:hover .cl-arrow { color: var(--accent); transform: translateX(6px); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 60px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+    .footer-accent { color: var(--accent); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ANIMATIONS ── */
+    .hero-tag { animation: fadeUp .6s .1s both ease; }
+    .hero-name { animation: fadeUp .6s .2s both ease; }
+    .hero-sub { animation: fadeUp .6s .35s both ease; }
+    .hero-btns { animation: fadeUp .6s .5s both ease; }
+    .profile-card { animation: fadeIn .8s .4s both ease, floatCard 4s 1.2s ease-in-out infinite; }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; } to { opacity:1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px) {
+      nav { padding: 18px 24px; }
+      section { padding: 70px 24px; }
+      #home { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 50px; }
+      .hero-right { justify-content: flex-start; }
+      .about-grid, .resume-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 8px; padding: 24px; }
+    }
+    @media(max-width:600px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 18px; }
+    }
+  </style>
 </head>
 <body>
 
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
 <nav>
-    <a href="#about">About</a>
-    <a href="#homework">Homework</a>
-    <a href="#contact">Contact</a>
+  <a class="nav-logo" href="#home">余峻豪</a>
+  <ul class="nav-links">
+    <li><a href="#about">關於我</a></li>
+    <li><a href="#resume">學歷</a></li>
+    <li><a href="#projects">作業 / 專案</a></li>
+    <li><a href="#contact">聯絡</a></li>
+  </ul>
 </nav>
 
-<div class="banner" id="top">
-    <div>
-        <h1>余峻豪</h1>
-        <p>Student | Aspiring Web Developer</p>
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-left">
+    <div class="hero-tag">資訊工程系 · 五年制專科</div>
+    <h1 class="hero-name">
+      你好，<br>
+      我是<span class="accent">余峻豪</span>
+    </h1>
+    <p class="hero-sub">
+      就讀 <strong>五專資訊工程系</strong>，對程式設計、系統開發充滿熱情。<br>
+      這裡是我的個人網站，會持續更新課堂作業與學習成果。
+    </p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#projects">查看作業</a>
+      <a class="btn-ghost" href="#about">認識我</a>
     </div>
-</div>
+  </div>
+  <div class="hero-right">
+    <div class="profile-card">
+      <div class="profile-avatar">余</div>
+      <h3>余峻豪</h3>
+      <div class="profile-dept">Dept. of Computer Science</div>
+      <div class="profile-stats">
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">年制專科</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">CS</div>
+          <div class="stat-label">資工系</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">學習熱情</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">↑</div>
+          <div class="stat-label">持續成長</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ABOUT -->
 <section id="about">
-    <h2>👤 About Me</h2>
-    <div class="card">
-        <p><strong>姓名：</strong>余峻豪</p>
-        <p><strong>科系：</strong>資工系</p>
-        <p><strong>興趣：</strong>打遊戲 / 學網頁設計</p>
+  <div class="section-label">About Me</div>
+  <h2 class="section-title">關於我</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        嗨！我是 <strong>余峻豪</strong>，目前就讀 <strong>五年制專科資訊工程系</strong>。
+        從接觸程式語言的那一刻起，我就對電腦科學產生了濃厚的興趣，
+        喜歡透過程式來解決問題、探索技術的邊界。
+      </p>
+      <p>
+        在學校裡，我積極學習各類資工基礎課程，包含程式設計、資料結構、計算機概論等，
+        同時也自主研究網頁開發與應用程式設計，希望能在畢業時具備紮實的工程能力。
+      </p>
+      <p>
+        這個網站是我的 <strong>個人作品集與學習日誌</strong>，所有課堂作業和自主專案都會在此更新。
+        歡迎一起交流！
+      </p>
+      <ul class="info-list">
+        <li><span class="info-key">姓名</span> 余峻豪</li>
+        <li><span class="info-key">學制</span> 五年制專科</li>
+        <li><span class="info-key">科系</span> 資訊工程系</li>
+        <li><span class="info-key">興趣</span> 程式設計、技術研究</li>
+        <li><span class="info-key">目標</span> 成為全端工程師</li>
+      </ul>
     </div>
-
-    <div class="card">
-        <h3>📝 自我介紹</h3>
-        <p>大家好，我是余峻豪，目前就讀資工系。我對網頁設計非常有興趣，喜歡從零開始設計網頁，並學習如何把作品變得更美觀和實用。在課餘時間，我喜歡打遊戲和挑戰新的程式專案，喜歡學習新技術並把它們運用在自己的作品上。</p>
+    <div class="about-skills-col reveal">
+      <div class="skill-category">
+        <h4>程式語言</h4>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Python</span><span>75%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-width="75"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>C / C++</span><span>65%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-width="65"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>JavaScript</span><span>60%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-width="60"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>HTML / CSS</span><span>70%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-width="70"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h4>工具 &amp; 技術</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">Docker</span>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-<section id="homework">
-    <h2>📚 Homework</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>HW1</h3>
-            <p>個人網站設計</p>
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-label">Resume</div>
+  <h2 class="section-title">學歷 &amp; 課程</h2>
+  <div class="resume-grid">
+    <div class="timeline-col reveal">
+      <h3>學歷紀錄</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-year">現在進行中</div>
+          <div class="tl-title">五年制專科 — 資訊工程系</div>
+          <div class="tl-place">技職院校</div>
+          <div class="tl-desc">
+            學習程式設計、資料結構、演算法、資料庫、網路概論、
+            作業系統等資工核心課程，培養解決問題與系統思維能力。
+          </div>
         </div>
-        <div class="card">
-            <h3>HW2</h3>
-            <p>HTML 練習</p>
+        <div class="timeline-item">
+          <div class="tl-year">畢業</div>
+          <div class="tl-title">國中階段</div>
+          <div class="tl-place">國民義務教育</div>
+          <div class="tl-desc">完成基礎教育，奠定學科基礎，開始對資訊科技產生興趣。</div>
         </div>
-        <div class="card">
-            <h3>HW3</h3>
-            <p>CSS 版面練習</p>
-        </div>
+      </div>
     </div>
+    <div class="timeline-col reveal">
+      <h3>核心課程</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-year">程式設計</div>
+          <div class="tl-title">Python &amp; C 語言程式設計</div>
+          <div class="tl-place">資工系必修</div>
+          <div class="tl-desc">學習程式邏輯、演算法設計、OOP 物件導向程式設計概念。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">資料庫</div>
+          <div class="tl-title">資料庫系統與 SQL</div>
+          <div class="tl-place">資工系必修</div>
+          <div class="tl-desc">關聯式資料庫設計、SQL 查詢語言、資料正規化。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">網路</div>
+          <div class="tl-title">計算機網路概論</div>
+          <div class="tl-place">資工系必修</div>
+          <div class="tl-desc">TCP/IP 協定、網路架構、HTTP / HTTPS、基礎網路安全。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">網頁</div>
+          <div class="tl-title">網頁程式設計</div>
+          <div class="tl-place">資工系選修</div>
+          <div class="tl-desc">HTML、CSS、JavaScript 前端開發，本網站即為課堂實作成果。</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Projects &amp; Assignments</div>
+  <h2 class="section-title">作業 &amp; 專案</h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">// 01</div>
+      <h3>個人網站</h3>
+      <p>使用 HTML、CSS、JavaScript 製作的個人作品集網站，包含自我介紹、學歷與作業展示。</p>
+      <div class="project-tags">
+        <span class="project-tag">HTML</span>
+        <span class="project-tag">CSS</span>
+        <span class="project-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">// 02</div>
+      <h3>待上傳 — 程式設計作業</h3>
+      <p>課堂程式設計作業，包含演算法實作、資料結構應用等，將於完成後更新至此處。</p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">C++</span>
+        <span class="project-tag">演算法</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">// 03</div>
+      <h3>待上傳 — 資料庫專案</h3>
+      <p>資料庫系統課程期末專案，設計並實作完整的資料庫應用系統，包含 ER Diagram 與 SQL。</p>
+      <div class="project-tags">
+        <span class="project-tag">MySQL</span>
+        <span class="project-tag">SQL</span>
+        <span class="project-tag">ER Diagram</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">// 04</div>
+      <h3>待上傳 — 網路程式設計</h3>
+      <p>網路概論課程實作，包含 Socket 程式設計、簡易 Client-Server 通訊應用。</p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Socket</span>
+        <span class="project-tag">網路</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">// 05</div>
+      <h3>待上傳 — 自主學習專案</h3>
+      <p>課外自主學習成果，探索 React 前端框架、REST API 設計等現代網頁開發技術。</p>
+      <div class="project-tags">
+        <span class="project-tag">React</span>
+        <span class="project-tag">Node.js</span>
+        <span class="project-tag">REST API</span>
+      </div>
+    </div>
+    <div class="project-card reveal" style="border-style:dashed; opacity:.5;">
+      <div class="project-num">// ??</div>
+      <h3>更多作業持續更新中…</h3>
+      <p>之後的課堂作業與自主專案將陸續放置於此，敬請期待。</p>
+      <div class="project-tags">
+        <span class="project-tag">TBD</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
 <section id="contact">
-    <h2>📫 Contact</h2>
-    <div class="card">
-        <p>Email: <a class="contact-link" href="mailto:5b2g0028@stust.edu.tw">5b2g0028@stust.edu.tw</a></p>
-        <p>GitHub: <a class="contact-link" href="https://github.com/5b2g0028">github.com/5b2g0028</a></p>
+  <div class="section-label">Contact</div>
+  <h2 class="section-title">聯絡我</h2>
+  <div class="contact-inner reveal">
+    <p>
+      有任何問題、合作邀約或想法，歡迎透過以下方式與我聯繫。
+      也歡迎同學們在課業上互相討論、交流！
+    </p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:your@email.com">
+        <span class="cl-label">📧 電子郵件</span>
+        <span class="cl-arrow">5b2g0028@stust.edu.tw →</span>
+      </a>
+      <a class="contact-link" href="https://github.com/" target="_blank">
+        <span class="cl-label">⌨ GitHub</span>
+        <span class="cl-arrow">github.com/5b2g0028 →</span>
+      </a>
+      
     </div>
+  </div>
 </section>
 
-<footer style="text-align:center; padding:20px; color:#7e8ba6;">
-    © 2026 余峻豪
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span class="footer-accent">余峻豪</span> · 五專資訊工程系</p>
+  <p>Built with HTML / CSS / JS</p>
 </footer>
 
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * .15; ry += (my - ry) * .15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a, button, .project-card, .skill-tag').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '18px'; cursor.style.height = '18px';
+      ring.style.width = '48px'; ring.style.height = '48px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      ring.style.width = '34px'; ring.style.height = '34px';
+    });
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // animate skill bars
+        e.target.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Stagger project cards
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.08) + 's';
+  });
+</script>
 </body>
 </html>
