@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的作業：Water Puzzle Game</title>
+    <style>
+        /* 這裡整合了你的 style.css 並修正了小錯誤 */
+        body {
+            background-color: antiquewhite;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            border: 1px dashed blue;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        .game-area { width: 90%; max-width: 600px; border-radius: 10px; padding: 20px; margin: 5px; text-align: center; }
+        #game-info { background-color: burlywood; }
+        #controls { background-color: darkgrey; }
+        #game-board { 
+            background-color: gainsboro; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .tube {
+            width: 50px; height: 200px;
+            border: 2px solid black; border-top: 0px;
+            border-radius: 0 0 25px 25px;
+            margin: 10px; display: flex;
+            flex-direction: column-reverse;
+            overflow: hidden; cursor: pointer;
+            background-color: rgba(255,255,255,0.3);
+        }
+        .tube.selected { border-color: red; border-width: 4px; }
+        .water { width: 100%; height: 25%; transition: all 0.3s; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>2026 Water Puzzle Game</h1>
+    
+    <div id="game-info" class="game-area">
+        <p>關卡：<span id="level-count">1</span></p>
+        <p>完成的試管：<span id="completed-tubes-count">0</span></p>
+    </div>
+
+    <div id="controls" class="game-area">
+        <label for="level-select">選擇關卡：</label>
+        <select id="level-select">
+            <script>
+                for(let i=1; i<=10; i++) document.write(`<option value="${i}">Level ${i}</option>`);
+            </script>
+        </select>
+        <button id="play-button">開始遊戲 (PLAY)</button>
+    </div>
+
+    <div id="game-board"></div>
+
+    <script>
+        /* 這裡整合了你的 waterpuzzle.js 邏輯 */
+        document.addEventListener("DOMContentLoaded", () => {
+            const gameBoard = document.getElementById("game-board");
+            const playButton = document.getElementById("play-button");
+            const levelSelect = document.getElementById("level-select");
+            const colors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "cyan", "magenta"];
+            let tubes = [];
+            let selectedTube = null;
+            let levelCount = 1;
+
+            function initGame() {
+                gameBoard.innerHTML = "";
+                tubes = [];
+                selectedTube = null;
+                // 建立試管
+                for (let i = 0; i < levelCount + 1; i++) createTube();
+                for (let i = 0; i < 2; i++) createTube(); // 緩衝管
+                fillTubes();
+            }
+
+            function createTube() {
+                const tube = document.createElement("div");
+                tube.classList.add("tube");
+                tube.onclick = () => selectTube(tube);
+                gameBoard.appendChild(tube);
+                tubes.push(tube);
+            }
+
+            function fillTubes() {
+                const gameColors = colors.slice(0, levelCount + 1);
+                let blocks = [];
+                gameColors.forEach(c => { for(let i=0; i<4; i++) blocks.push(c); });
+                blocks.sort(() => Math.random() - 0.5);
+                
+                let idx = 0;
+                tubes.slice(0, levelCount + 1).forEach(tube => {
+                    for(let i=0; i<4; i++) {
+                        const water = document.createElement("div");
+                        water.classList.add("water");
+                        water.style.backgroundColor = blocks[idx++];
+                        tube.appendChild(water);
+                    }
+                });
+            }
+
+            function selectTube(tube) {
+                if (!selectedTube) {
+                    if (tube.children.length === 0) return;
+                    selectedTube = tube;
+                    tube.classList.add("selected");
+                } else {
+                    if (selectedTube === tube) {
+                        selectedTube.classList.remove("selected");
+                        selectedTube = null;
+                        return;
+                    }
+                    moveWater(selectedTube, tube);
+                    selectedTube.classList.remove("selected");
+                    selectedTube = null;
+                    checkWin();
+                }
+            }
+
+            function moveWater(from, to) {
+                if (to.children.length >= 4) return;
+                const topWater = from.lastElementChild;
+                if (!topWater) return;
+                
+                if (to.children.length > 0) {
+                    const targetTopWater = to.lastElementChild;
+                    if (targetTopWater.style.backgroundColor !== topWater.style.backgroundColor) return;
+                }
+                to.appendChild(topWater);
+            }
+
+            function checkWin() {
+                let winCount = 0;
+                tubes.forEach(tube => {
+                    const children = Array.from(tube.children);
+                    if (children.length === 4 && children.every(w => w.style.backgroundColor === children[0].style.backgroundColor)) {
+                        winCount++;
+                    }
+                });
+                document.getElementById("completed-tubes-count").textContent = winCount;
+                if (winCount === levelCount + 1) {
+                    alert("恭喜過關！");
+                    if (levelCount < 10) {
+                        levelCount++;
+                        document.getElementById("level-count").textContent = levelCount;
+                        initGame();
+                    } else {
+                        alert("你已經破了所有關卡！你是灌水大師！");
+                    }
+                }
+            }
+
+            playButton.onclick = initGame;
+            levelSelect.onchange = (e) => {
+                levelCount = parseInt(e.target.value);
+                document.getElementById("level-count").textContent = levelCount;
+            };
+            initGame();
+        });
+    </script>
+</body>
+</html>
