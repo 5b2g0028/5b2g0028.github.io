@@ -3,65 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的作業：Water Puzzle Game</title>
+    <title>Water Puzzle - 作業展示</title>
     <style>
-        /* 這裡整合了你的 style.css 並修正了小錯誤 */
-        body {
-            background-color: antiquewhite;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            border: 1px dashed blue;
-            border-radius: 20px;
-            margin: 20px;
-        }
+        /* 這裡整合了你的 style.css */
+        body { background-color: antiquewhite; font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 20px; border: 1px dashed blue; border-radius: 20px; }
         .game-area { width: 90%; max-width: 600px; border-radius: 10px; padding: 20px; margin: 5px; text-align: center; }
         #game-info { background-color: burlywood; }
         #controls { background-color: darkgrey; }
-        #game-board { 
-            background-color: gainsboro; 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .tube {
-            width: 50px; height: 200px;
-            border: 2px solid black; border-top: 0px;
-            border-radius: 0 0 25px 25px;
-            margin: 10px; display: flex;
-            flex-direction: column-reverse;
-            overflow: hidden; cursor: pointer;
-            background-color: rgba(255,255,255,0.3);
-        }
-        .tube.selected { border-color: red; border-width: 4px; }
-        .water { width: 100%; height: 25%; transition: all 0.3s; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #game-board { background-color: gainsboro; display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; margin-top: 20px; }
+        .tube { width: 50px; height: 200px; border: 2px solid black; border-top: 0; border-radius: 0 0 25px 25px; margin: 10px; display: flex; flex-direction: column-reverse; overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.3); position: relative; }
+        .tube.selected { border: 4px solid red; transform: translateY(-10px); transition: 0.2s; }
+        .water { width: 100%; height: 25%; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px; }
+        .back-home { margin-top: 20px; text-decoration: none; color: #333; font-weight: bold; }
     </style>
 </head>
 <body>
     <h1>2026 Water Puzzle Game</h1>
-    
     <div id="game-info" class="game-area">
         <p>關卡：<span id="level-count">1</span></p>
         <p>完成的試管：<span id="completed-tubes-count">0</span></p>
     </div>
-
     <div id="controls" class="game-area">
-        <label for="level-select">選擇關卡：</label>
+        <label for="level-select">選擇關卡</label>
         <select id="level-select">
-            <script>
-                for(let i=1; i<=10; i++) document.write(`<option value="${i}">Level ${i}</option>`);
-            </script>
+            <option value="1">Level 1</option><option value="2">Level 2</option>
+            <option value="3">Level 3</option><option value="4">Level 4</option>
+            <option value="5">Level 5</option><option value="6">Level 6</option>
+            <option value="7">Level 7</option><option value="8">Level 8</option>
+            <option value="9">Level 9</option><option value="10">Level 10</option>
         </select>
-        <button id="play-button">開始遊戲 (PLAY)</button>
+        <button id="play-button">PLAY</button>
     </div>
-
     <div id="game-board"></div>
+    <a href="index.html" class="back-home">← 回到個人首頁</a>
 
     <script>
         /* 這裡整合了你的 waterpuzzle.js 邏輯 */
@@ -70,100 +45,71 @@
             const playButton = document.getElementById("play-button");
             const levelSelect = document.getElementById("level-select");
             const colors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "cyan", "magenta"];
-            let tubes = [];
-            let selectedTube = null;
-            let levelCount = 1;
+            let tubes = [], selectedTube = null, levelCount = 1;
 
             function initGame() {
-                gameBoard.innerHTML = "";
-                tubes = [];
-                selectedTube = null;
-                // 建立試管
+                gameBoard.innerHTML = ""; tubes = []; selectedTube = null;
                 for (let i = 0; i < levelCount + 1; i++) createTube();
-                for (let i = 0; i < 2; i++) createTube(); // 緩衝管
+                for (let i = 0; i < 2; i++) createTube();
                 fillTubes();
             }
 
             function createTube() {
                 const tube = document.createElement("div");
                 tube.classList.add("tube");
-                tube.onclick = () => selectTube(tube);
-                gameBoard.appendChild(tube);
-                tubes.push(tube);
+                tube.onclick = () => {
+                    if (!selectedTube) {
+                        if (tube.children.length === 0) return;
+                        selectedTube = tube; tube.classList.add("selected");
+                    } else {
+                        if (selectedTube === tube) {
+                            selectedTube.classList.remove("selected"); selectedTube = null;
+                        } else {
+                            if (tube.children.length < 4) {
+                                const water = selectedTube.lastElementChild;
+                                if (water && (tube.children.length === 0 || tube.lastElementChild.style.backgroundColor === water.style.backgroundColor)) {
+                                    tube.appendChild(water);
+                                }
+                            }
+                            selectedTube.classList.remove("selected"); selectedTube = null;
+                            checkWin();
+                        }
+                    }
+                };
+                gameBoard.appendChild(tube); tubes.push(tube);
             }
 
             function fillTubes() {
-                const gameColors = colors.slice(0, levelCount + 1);
                 let blocks = [];
+                const gameColors = colors.slice(0, levelCount + 1);
                 gameColors.forEach(c => { for(let i=0; i<4; i++) blocks.push(c); });
                 blocks.sort(() => Math.random() - 0.5);
-                
                 let idx = 0;
                 tubes.slice(0, levelCount + 1).forEach(tube => {
                     for(let i=0; i<4; i++) {
-                        const water = document.createElement("div");
-                        water.classList.add("water");
-                        water.style.backgroundColor = blocks[idx++];
-                        tube.appendChild(water);
+                        const w = document.createElement("div");
+                        w.classList.add("water"); w.style.backgroundColor = blocks[idx++];
+                        tube.appendChild(w);
                     }
                 });
-            }
-
-            function selectTube(tube) {
-                if (!selectedTube) {
-                    if (tube.children.length === 0) return;
-                    selectedTube = tube;
-                    tube.classList.add("selected");
-                } else {
-                    if (selectedTube === tube) {
-                        selectedTube.classList.remove("selected");
-                        selectedTube = null;
-                        return;
-                    }
-                    moveWater(selectedTube, tube);
-                    selectedTube.classList.remove("selected");
-                    selectedTube = null;
-                    checkWin();
-                }
-            }
-
-            function moveWater(from, to) {
-                if (to.children.length >= 4) return;
-                const topWater = from.lastElementChild;
-                if (!topWater) return;
-                
-                if (to.children.length > 0) {
-                    const targetTopWater = to.lastElementChild;
-                    if (targetTopWater.style.backgroundColor !== topWater.style.backgroundColor) return;
-                }
-                to.appendChild(topWater);
             }
 
             function checkWin() {
                 let winCount = 0;
-                tubes.forEach(tube => {
-                    const children = Array.from(tube.children);
-                    if (children.length === 4 && children.every(w => w.style.backgroundColor === children[0].style.backgroundColor)) {
-                        winCount++;
+                tubes.forEach(t => {
+                    if (t.children.length === 4) {
+                        const c = Array.from(t.children);
+                        if (c.every(w => w.style.backgroundColor === c[0].style.backgroundColor)) winCount++;
                     }
                 });
-                document.getElementById("completed-tubes-count").textContent = winCount;
-                if (winCount === levelCount + 1) {
-                    alert("恭喜過關！");
-                    if (levelCount < 10) {
-                        levelCount++;
-                        document.getElementById("level-count").textContent = levelCount;
-                        initGame();
-                    } else {
-                        alert("你已經破了所有關卡！你是灌水大師！");
-                    }
-                }
+                document.getElementById("completed-tubes-count").innerText = winCount;
+                if (winCount === levelCount + 1) alert("恭喜過關！");
             }
 
             playButton.onclick = initGame;
             levelSelect.onchange = (e) => {
                 levelCount = parseInt(e.target.value);
-                document.getElementById("level-count").textContent = levelCount;
+                document.getElementById("level-count").innerText = levelCount;
             };
             initGame();
         });
